@@ -1,39 +1,69 @@
-# Order Service
+# OrderService
 
-Простой учебный ASP.NET Core REST API для управления заказами.
+Small ASP.NET Core Web API project for working with orders.
 
-## Возможности
+I made it for practice with:
 
-- `GET /api/orders` - получить список заказов.
-- `GET /api/orders/{id}` - получить заказ по идентификатору.
-- `POST /api/orders` - создать заказ.
-- `PUT /api/orders/{id}` - обновить заказ.
-- `DELETE /api/orders/{id}` - удалить заказ.
-- Entity Framework Core + PostgreSQL.
-- Начальная миграция для таблицы `orders`.
+- ASP.NET Core
+- REST API
+- Entity Framework Core
+- PostgreSQL
 
-## Запуск
+## What it can do
 
-1. Создайте PostgreSQL базу `orders_db`.
-2. При необходимости измените строку подключения в `appsettings.json`.
-3. Примените миграции:
+The API has basic CRUD methods for orders:
+
+- get all orders
+- get one order by id
+- create order
+- update order
+- delete order
+
+## Order model
+
+Order has these fields:
+
+- Id
+- CustomerName
+- ProductName
+- Quantity
+- Price
+
+## How to run
+
+Create database in PostgreSQL:
+
+```sql
+CREATE DATABASE orders_db;
+```
+
+Check connection string in `appsettings.json`.
+
+Then run migrations:
 
 ```bash
 dotnet ef database update
 ```
 
-4. Запустите сервис:
+Run project:
 
 ```bash
 dotnet run
 ```
 
-## Пример создания заказа
+## Endpoints
 
 ```http
+GET /api/orders
+GET /api/orders/1
 POST /api/orders
-Content-Type: application/json
+PUT /api/orders/1
+DELETE /api/orders/1
+```
 
+Example body for POST:
+
+```json
 {
   "customerName": "Ivan Petrov",
   "productName": "Laptop",
