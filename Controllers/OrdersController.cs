@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using OrderService.Data;
-using OrderService.Models;
+using OrderService.DTOs;
+using OrderService.Services;
 
 namespace OrderService.Controllers;
 
@@ -9,27 +8,25 @@ namespace OrderService.Controllers;
 [Route("api/[controller]")]
 public class OrdersController : ControllerBase
 {
-    private readonly OrderDbContext _dbContext;
+    private readonly IOrderService _orders;
 
-    public OrdersController(OrderDbContext dbContext)
+    public OrdersController(IOrderService orders)
     {
-        _dbContext = dbContext;
+        _orders = orders;
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Order>>> GetOrders()
+    public async Task<ActionResult<List<OrderDto>>> GetOrders()
     {
-        var orders = await _dbContext.Orders.ToListAsync();
-
-        return Ok(orders);
+        return Ok(await _orders.GetOrdersAsync());
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Order>> GetOrder(int id)
+    public async Task<ActionResult<OrderDto>> GetOrder(int id)
     {
-        var order = await _dbContext.Orders.FindAsync(id);
+        var order = await _orders.GetOrderAsync(id);
 
-        if (order == null)
+        if (order is null)
         {
             return NotFound();
         }
@@ -38,30 +35,22 @@ public class OrdersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Order>> CreateOrder(Order order)
+    public async Task<ActionResult<OrderDto>> CreateOrder(CreateOrderDto dto)
     {
-        _dbContext.Orders.Add(order);
-        await _dbContext.SaveChangesAsync();
+        var created = await _orders.CreateOrderAsync(dto);
 
-        return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, order);
+        return CreatedAtAction(nameof(GetOrder), new { id = created.Id }, created);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateOrder(int id, Order updatedOrder)
+    public async Task<IActionResult> UpdateOrder(int id, UpdateOrderDto dto)
     {
-        var order = await _dbContext.Orders.FindAsync(id);
+        var updated = await _orders.UpdateOrderAsync(id, dto);
 
-        if (order == null)
+        if (!updated)
         {
             return NotFound();
         }
-
-        order.CustomerName = updatedOrder.CustomerName;
-        order.ProductName = updatedOrder.ProductName;
-        order.Quantity = updatedOrder.Quantity;
-        order.Price = updatedOrder.Price;
-
-        await _dbContext.SaveChangesAsync();
 
         return NoContent();
     }
@@ -69,15 +58,12 @@ public class OrdersController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteOrder(int id)
     {
-        var order = await _dbContext.Orders.FindAsync(id);
+        var deleted = await _orders.DeleteOrderAsync(id);
 
-        if (order == null)
+        if (!deleted)
         {
             return NotFound();
         }
-
-        _dbContext.Orders.Remove(order);
-        await _dbContext.SaveChangesAsync();
 
         return NoContent();
     }
