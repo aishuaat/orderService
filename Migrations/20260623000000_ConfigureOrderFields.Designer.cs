@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OrderService.Data;
 
@@ -8,9 +9,10 @@ using OrderService.Data;
 namespace OrderService.Migrations;
 
 [DbContext(typeof(OrderDbContext))]
-partial class OrderDbContextModelSnapshot : ModelSnapshot
+[Migration("20260623000000_ConfigureOrderFields")]
+partial class ConfigureOrderFields
 {
-    protected override void BuildModel(ModelBuilder modelBuilder)
+    protected override void BuildTargetModel(ModelBuilder modelBuilder)
     {
         modelBuilder
             .HasAnnotation("ProductVersion", "10.0.9")
