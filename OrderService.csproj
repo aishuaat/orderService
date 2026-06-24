@@ -21,10 +21,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="ApiGateway\**\*.cs" />
+    <Content Remove="ApiGateway\**\*" />
+    <EmbeddedResource Remove="ApiGateway\**\*" />
+    <None Remove="ApiGateway\**\*" />
     <Compile Remove="tests\**\*.cs" />
     <Content Remove="tests\**\*" />
     <EmbeddedResource Remove="tests\**\*" />
     <None Remove="tests\**\*" />
   </ItemGroup>
+
 
 </Project>
