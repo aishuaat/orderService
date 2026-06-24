@@ -3,6 +3,10 @@ using OrderService.Models;
 
 namespace OrderService.Data;
 
+/// <summary>
+/// Provides EF Core access to the Order Service database.
+/// It is consumed by the repository layer rather than directly by controllers.
+/// </summary>
 public class OrderDbContext : DbContext
 {
     public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options)

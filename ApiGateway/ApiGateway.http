@@ -1,0 +1,29 @@
+@ApiGateway_HostAddress = https://localhost:7298
+
+### Получить все заказы
+GET {{ApiGateway_HostAddress}}/orders
+
+### Создать заказ
+POST {{ApiGateway_HostAddress}}/orders
+Content-Type: application/json
+
+{
+  "customerName": "Nurlan",
+  "productName": "Laptop",
+  "quantity": 4,
+  "price": 7878.00
+}
+
+### Обновить заказ
+PUT {{ApiGateway_HostAddress}}/orders/4
+Content-Type: application/json
+
+{
+  "customerName": "Aishat",
+  "productName": "Tablet",
+  "quantity": 2,
+  "price": 850.00
+}
+
+### Удалить заказ
+DELETE {{ApiGateway_HostAddress}}/orders/4

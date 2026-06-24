@@ -5,6 +5,7 @@ using OrderService.Repositories;
 
 namespace OrderService.Services;
 
+/// <inheritdoc />
 public class OrderService : IOrderService
 {
     private readonly IOrderRepository _orders;
@@ -14,18 +15,21 @@ public class OrderService : IOrderService
         _orders = orders;
     }
 
+    /// <inheritdoc />
     public async Task<List<OrderDto>> GetOrdersAsync()
     {
         var orders = await _orders.GetAllAsync();
         return orders.Select(order => order.ToDto()).ToList();
     }
 
+    /// <inheritdoc />
     public async Task<OrderDto?> GetOrderAsync(int id)
     {
         var order = await _orders.GetByIdAsync(id);
         return order?.ToDto();
     }
 
+    /// <inheritdoc />
     public async Task<OrderDto> CreateOrderAsync(CreateOrderDto dto)
     {
         var order = new Order
@@ -41,6 +45,7 @@ public class OrderService : IOrderService
         return order.ToDto();
     }
 
+    /// <inheritdoc />
     public async Task<bool> UpdateOrderAsync(int id, UpdateOrderDto dto)
     {
         var order = await _orders.GetByIdAsync(id);
@@ -60,6 +65,7 @@ public class OrderService : IOrderService
         return true;
     }
 
+    /// <inheritdoc />
     public async Task<bool> DeleteOrderAsync(int id)
     {
         var order = await _orders.GetByIdAsync(id);
