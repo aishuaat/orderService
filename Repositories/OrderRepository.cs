@@ -4,6 +4,7 @@ using OrderService.Models;
 
 namespace OrderService.Repositories;
 
+/// <inheritdoc />
 public class OrderRepository : IOrderRepository
 {
     private readonly OrderDbContext _dbContext;
@@ -13,6 +14,7 @@ public class OrderRepository : IOrderRepository
         _dbContext = dbContext;
     }
 
+    /// <inheritdoc />
     public Task<List<Order>> GetAllAsync()
     {
         return _dbContext.Orders
@@ -20,22 +22,26 @@ public class OrderRepository : IOrderRepository
             .ToListAsync();
     }
 
+    /// <inheritdoc />
     public Task<Order?> GetByIdAsync(int id)
     {
         return _dbContext.Orders.FindAsync(id).AsTask();
     }
 
+    /// <inheritdoc />
     public async Task AddAsync(Order order)
     {
         _dbContext.Orders.Add(order);
         await _dbContext.SaveChangesAsync();
     }
 
+    /// <inheritdoc />
     public Task UpdateAsync(Order order)
     {
         return _dbContext.SaveChangesAsync();
     }
 
+    /// <inheritdoc />
     public async Task DeleteAsync(Order order)
     {
         _dbContext.Orders.Remove(order);
