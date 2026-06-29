@@ -4,12 +4,12 @@ using OrderService.Services;
 
 namespace OrderService.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
 /// <summary>
 /// Exposes HTTP endpoints for managing orders.
 /// Business operations are delegated to <see cref="IOrderService"/>.
 /// </summary>
+[ApiController]
+[Route("api/[controller]")]
 public class OrdersController : ControllerBase
 {
     private readonly IOrderService _orders;

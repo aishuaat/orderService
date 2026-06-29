@@ -48,7 +48,13 @@ Create database in PostgreSQL:
 CREATE DATABASE orders_db;
 ```
 
-Check connection string in `appsettings.json`.
+Set the local PostgreSQL connection string with User Secrets:
+
+```bash
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Port=5432;Database=orders_db;Username=postgres;Password=your_password"
+```
+
+`appsettings.json` keeps only a placeholder password, so real credentials are not stored in git.
 
 Then run migrations:
 
@@ -62,7 +68,36 @@ Run project:
 dotnet run
 ```
 
+## API Gateway
+
+The solution includes a separate Ocelot API Gateway project:
+
+```text
+Client -> ApiGateway -> OrderService -> PostgreSQL
+```
+
+For local development, run both `ApiGateway` and `OrderService` from the solution startup profile.
+
+Default local addresses:
+
+- ApiGateway: `https://localhost:7298`
+- OrderService: `https://localhost:7229`
+
+Clients should call the gateway routes:
+
+```http
+GET /orders
+GET /orders/1
+POST /orders
+PUT /orders/1
+DELETE /orders/1
+```
+
+Ocelot forwards these requests to the internal Order Service routes under `/api/orders`.
+
 ## Endpoints
+
+Order Service internal endpoints:
 
 ```http
 GET /api/orders
